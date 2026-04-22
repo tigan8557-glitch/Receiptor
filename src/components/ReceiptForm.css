@@ -1,4 +1,3 @@
-/* src/components/ReceiptForm.css */
 :root {
   --card-max-width: 1200px;
   --card-radius: 14px;
@@ -25,26 +24,22 @@
 }
 
 /* Theme root classes (the cards handle their own backgrounds) */
-.form-container.dark {
-  color: #fff;
-}
-.form-container.light {
-  color: #000;
-}
+.form-container.dark { color: #fff; }
+.form-container.light { color: #000; }
 
 /* Each column is a card that stretches to the container height */
 .form-section,
 .preview-section {
   display: flex;
   flex-direction: column;
-  flex: 1;               /* allow both columns to take equal height */
-  min-height: 0;        /* IMPORTANT: allows child overflow to scroll instead of expanding */
+  flex: 1;               /* allow both columns to take equal height on wide screens */
+  min-height: 0;         /* IMPORTANT: allows child overflow to scroll instead of expanding */
   background: var(--dark-card-bg);
   border-radius: var(--card-radius);
   padding: clamp(16px, 2.6vw, 36px);
   box-sizing: border-box;
   box-shadow: 0 10px 30px rgba(2,6,23,0.18);
-  overflow: hidden;     /* inner area handles scrolling */
+  overflow: hidden;      /* inner area handles scrolling */
 }
 
 /* Light theme card overrides */
@@ -87,9 +82,7 @@
   font-size: 14px;
   font-weight: 500;
 }
-.form-container.light .theme-toggle-btn {
-  border-color: #e6e6e6;
-}
+.form-container.light .theme-toggle-btn { border-color: #e6e6e6; }
 
 /* Controls & inputs */
 .control-group,
@@ -99,10 +92,7 @@
   gap: 8px;
 }
 
-.button-group {
-  display: flex;
-  gap: 10px;
-}
+.button-group { display: flex; gap: 10px; }
 
 .btn {
   flex: 1;
@@ -121,16 +111,10 @@
   color: #000;
   border-color: #e6e6e6;
 }
-.btn.active {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
+.btn.active { background: #000; color: #fff; border-color: #000; }
 
 /* Inputs */
-input,
-select,
-textarea {
+input, select, textarea {
   padding: 10px 12px;
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
@@ -147,9 +131,7 @@ textarea {
   border-color: #e6e6e6;
   color: #000;
 }
-input:focus,
-select:focus,
-textarea:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
   box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
 }
@@ -184,10 +166,7 @@ textarea:focus {
   color: #fff;
   background: linear-gradient(180deg, #111827, #0b1220);
 }
-.form-container.light .generate-btn {
-  background: #000;
-  color: #fff;
-}
+.form-container.light .generate-btn { background: #000; color: #fff; }
 
 /* Preview tweaks */
 .preview-section {
@@ -196,37 +175,34 @@ textarea:focus {
   padding-top: 12px;
 }
 
-/* Collapse to single column on small screens */
+/* SMALL SCREEN BEHAVIOR: stack to a single column and hide the preview to prevent empty half-page */
 @media (max-width: 1024px) {
   .form-container {
     grid-template-columns: 1fr;
     height: 100%;
   }
 
-  .form-section,
+  /* Show only form; hide preview entirely for mobile to avoid blank area */
   .preview-section {
-    /* stacking still stretches in height; min-height:0 keeps scroll inside each card */
+    display: none !important;
+  }
+
+  /* Make the form fill and scroll properly */
+  .form-section {
+    flex: 1 1 auto;
     min-height: 0;
   }
 }
 
 /* Tighter paddings on very small screens */
 @media (max-width: 480px) {
-  :root {
-    --card-radius: 12px;
-  }
+  :root { --card-radius: 12px; }
 
-  .form-section,
-  .preview-section {
+  .form-section {
     padding: clamp(12px, 4vw, 20px);
     border-radius: 12px;
   }
 
-  .form-header h2 {
-    font-size: 18px;
-  }
-
-  .inputs-grid {
-    gap: 10px;
-  }
+  .form-header h2 { font-size: 18px; }
+  .inputs-grid { gap: 10px; }
 }
