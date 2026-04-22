@@ -10,7 +10,8 @@ export const ReceiptForm = () => {
   const [deviceType, setDeviceType] = useState('android');
   const [platform, setPlatform] = useState('binance');
 
-  const [statusState, setStatusState] = useState('idle');
+  // UI state
+  const [statusState, setStatusState] = useState('idle'); // idle | loading | done
 
   const [formData, setFormData] = useState({
     amountReceived: '71',
@@ -35,13 +36,28 @@ export const ReceiptForm = () => {
 
   const handleGenerate = () => {
     if (statusState === 'loading') return;
+
+    // Start animation
     setStatusState('loading');
 
+    // Simulate generation delay then navigate to /receipt with data
     setTimeout(() => {
       setStatusState('done');
-      try { localStorage.setItem('latestReceiptData', JSON.stringify(formData)); } catch {}
+
+      // persist data to localStorage as fallback
+      try {
+        localStorage.setItem('latestReceiptData', JSON.stringify(formData));
+      } catch (e) {
+        // ignore
+      }
+
+      // Navigate and pass data via location.state for immediate render on /receipt
       navigate('/receipt', { state: { receiptData: { ...formData, deviceType, platform } } });
-      setTimeout(() => setStatusState('idle'), 800);
+
+      // Reset button state after a short delay (optional)
+      setTimeout(() => {
+        setStatusState('idle');
+      }, 800);
     }, 1100);
   };
 
@@ -84,7 +100,10 @@ export const ReceiptForm = () => {
 
           <div className="control-group">
             <label>Platform</label>
-            <select value={platform} onChange={(e) => setPlatform(e.target.value)}>
+            <select
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+            >
               <option value="binance">Binance</option>
               <option value="okx">OKX</option>
               <option value="kraken">Kraken</option>
@@ -95,47 +114,91 @@ export const ReceiptForm = () => {
           <div className="inputs-grid">
             <div className="input-group">
               <label>Amount</label>
-              <input type="text" name="withdrawalAmount" value={formData.withdrawalAmount} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="withdrawalAmount"
+                value={formData.withdrawalAmount}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Currency</label>
-              <input type="text" name="currency" value={formData.currency} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="currency"
+                value={formData.currency}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Network</label>
-              <input type="text" name="network" value={formData.network} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="network"
+                value={formData.network}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Network Fee</label>
-              <input type="text" name="fee" value={formData.fee} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="fee"
+                value={formData.fee}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Address</label>
-              <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Txid / Remarks</label>
-              <input type="text" name="remarks" value={formData.remarks} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="remarks"
+                value={formData.remarks}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Wallet</label>
-              <input type="text" name="withdrawalAccount" value={formData.withdrawalAccount} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="withdrawalAccount"
+                value={formData.withdrawalAccount}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Date & Time</label>
-              <input type="text" name="timestamp" value={formData.timestamp} onChange={handleInputChange} />
+              <input
+                type="text"
+                name="timestamp"
+                value={formData.timestamp}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Status</label>
-              <select name="status" value={formData.status} onChange={handleInputChange}>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+              >
                 <option value="Completed">Completed</option>
                 <option value="Pending">Pending</option>
                 <option value="Failed">Failed</option>
@@ -145,7 +208,11 @@ export const ReceiptForm = () => {
         </div>
 
         <div className="form-actions">
-          <button className={`generate-btn ${statusState}`} onClick={handleGenerate} type="button">
+          <button
+            className={`generate-btn ${statusState}`}
+            onClick={handleGenerate}
+            type="button"
+          >
             {getButtonText()}
           </button>
         </div>
@@ -153,8 +220,16 @@ export const ReceiptForm = () => {
 
       <div className="preview-section">
         <div className="content">
+          {/* Placeholder preview area.
+              You can render a small live preview here or leave it as a note.
+              The actual receipt full view is on /receipt after generating. */}
           <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
-            <p style={{ marginTop: 20 }}>Preview will appear on the Receipt page after you generate.</p>
+            <p style={{ marginTop: 20 }}>
+              Preview will appear on the Receipt page after you generate.
+            </p>
+            <p style={{ fontSize: 12, opacity: 0.7 }}>
+              (Or implement an inline preview component here)
+            </p>
           </div>
         </div>
       </div>
