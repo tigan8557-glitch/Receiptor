@@ -1,24 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
+import { ReceiptForm } from './components/ReceiptForm';
+import { BinanceReceipt } from './components/BinanceReceipt';
 import './App.css';
 
 function App() {
+  const [status, setStatus] = useState('idle'); // idle | generating | done
+  const [formData, setFormData] = useState({});
+
+  const handleGenerate = (data) => {
+    setFormData(data);
+    setStatus('generating');
+
+    setTimeout(() => {
+      setStatus('done');
+    }, 1500); // simulate loading
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider>
+      <div className="App">
+
+        {/* FORM */}
+        <ReceiptForm 
+          onGenerate={handleGenerate}
+          status={status}
+        />
+
+        {/* RECEIPT (only after complete) */}
+        {status === 'done' && (
+          <BinanceReceipt 
+            data={formData}
+          />
+        )}
+
+      </div>
+    </ThemeProvider>
   );
 }
 

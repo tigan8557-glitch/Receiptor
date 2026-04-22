@@ -1,0 +1,475 @@
+.receipt-editor-container {
+  padding: 20px;
+  border-radius: 12px;
+  transition: all 0.3s;
+  min-height: 100vh;
+}
+
+.receipt-editor-container.dark {
+  background: #0f1419;
+  color: #eaecef;
+}
+
+.receipt-editor-container.light {
+  background: #f5f5f5;
+  color: #191919;
+}
+
+/* Header */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.editor-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.upload-btn {
+  padding: 10px 16px;
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.upload-btn:hover {
+  background: #e8ac08;
+  transform: translateY(-2px);
+}
+
+/* Upload Placeholder */
+.upload-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  border: 2px dashed;
+  border-radius: 12px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.receipt-editor-container.dark .upload-placeholder {
+  border-color: #1a1f2e;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.receipt-editor-container.light .upload-placeholder {
+  border-color: #ddd;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.placeholder-content {
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.upload-placeholder p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.placeholder-text {
+  font-size: 12px !important;
+}
+
+.receipt-editor-container.dark .placeholder-text {
+  color: #767f8f;
+}
+
+.receipt-editor-container.light .placeholder-text {
+  color: #999;
+}
+
+.upload-placeholder-btn {
+  padding: 10px 24px;
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 16px;
+  transition: all 0.2s;
+}
+
+.upload-placeholder-btn:hover {
+  background: #e8ac08;
+}
+
+/* Editor Content */
+.editor-content {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.canvas-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.receipt-editor-container.dark .canvas-container {
+  background: #1a1f2e;
+  border: 1px solid #2a3139;
+}
+
+.receipt-editor-container.light .canvas-container {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.receipt-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  cursor: crosshair;
+}
+
+.canvas-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-size: 11px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Sidebar */
+.editor-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: 800px;
+}
+
+.sidebar-section {
+  padding: 14px;
+  border-radius: 8px;
+}
+
+.receipt-editor-container.dark .sidebar-section {
+  background: #1a1f2e;
+  border: 1px solid #2a3139;
+}
+
+.receipt-editor-container.light .sidebar-section {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.sidebar-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.receipt-editor-container.dark .sidebar-section h3 {
+  color: #767f8f;
+}
+
+.receipt-editor-container.light .sidebar-section h3 {
+  color: #999;
+}
+
+/* Overlays List */
+.overlays-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.overlay-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  font-size: 12px;
+}
+
+.receipt-editor-container.dark .overlay-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.receipt-editor-container.light .overlay-item {
+  background: #f9f9f9;
+  border-color: #e5e5e5;
+}
+
+.overlay-item.active {
+  background: #f0b90b;
+  border-color: #e8ac08;
+  color: #000;
+}
+
+.overlay-item.active .overlay-text {
+  color: #000;
+  font-weight: 600;
+}
+
+.overlay-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+}
+
+.receipt-editor-container.dark .overlay-text {
+  color: #eaecef;
+}
+
+.receipt-editor-container.light .overlay-text {
+  color: #191919;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.receipt-editor-container.dark .form-group label {
+  color: #767f8f;
+}
+
+.receipt-editor-container.light .form-group label {
+  color: #999;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="range"] {
+  padding: 6px 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.receipt-editor-container.dark .form-group input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #2a3139;
+  color: #eaecef;
+}
+
+.receipt-editor-container.dark .form-group input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #f0b90b;
+  outline: none;
+}
+
+.receipt-editor-container.light .form-group input {
+  background: #fff;
+  border-color: #ddd;
+  color: #191919;
+}
+
+.receipt-editor-container.light .form-group input:focus {
+  border-color: #191919;
+  outline: none;
+}
+
+.size-display {
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.receipt-editor-container.dark .size-display {
+  color: #767f8f;
+}
+
+.receipt-editor-container.light .size-display {
+  color: #999;
+}
+
+/* Color Picker */
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-picker input[type="color"] {
+  width: 40px;
+  height: 32px;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.receipt-editor-container.dark .color-picker input[type="color"] {
+  border-color: #2a3139;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.receipt-editor-container.light .color-picker input[type="color"] {
+  border-color: #ddd;
+  background: #fff;
+}
+
+.color-value {
+  font-size: 10px;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.receipt-editor-container.dark .color-value {
+  color: #eaecef;
+}
+
+.receipt-editor-container.light .color-value {
+  color: #191919;
+}
+
+/* Action Buttons */
+.action-btn,
+.delete-overlay-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s;
+  margin-bottom: 6px;
+}
+
+.export-btn {
+  background: #f0b90b;
+  color: #000;
+}
+
+.export-btn:hover {
+  background: #e8ac08;
+}
+
+.copy-btn {
+  background: #05b26d;
+  color: #fff;
+}
+
+.copy-btn:hover {
+  background: #04a060;
+}
+
+.reset-btn {
+  background: #ff6b6b;
+  color: #fff;
+}
+
+.reset-btn:hover {
+  background: #f03e3e;
+}
+
+.delete-overlay-btn {
+  background: #ff6b6b;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.delete-overlay-btn:hover {
+  background: #f03e3e;
+}
+
+/* Info Section */
+.info-section p {
+  margin: 4px 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.receipt-editor-container.dark .info-section p {
+  color: #767f8f;
+}
+
+.receipt-editor-container.light .info-section p {
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .editor-content {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-sidebar {
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .editor-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .receipt-canvas {
+    max-width: 100%;
+  }
+}
