@@ -1,3 +1,4 @@
+/* src/components/ReceiptForm.css */
 :root {
   --card-max-width: 1200px;
   --card-radius: 14px;
@@ -7,6 +8,7 @@
   --dark-card-bg: #0f1419;
   --light-card-bg: #ffffff;
   --accent: #1a1f2e;
+  --generate-height: 72px; /* reserved height for sticky generate button area */
 }
 
 /* Container that holds form and preview.
@@ -23,7 +25,7 @@
   align-items: stretch; /* stretch children to same height */
 }
 
-/* Theme root classes (the cards handle their own backgrounds) */
+/* Theme root classes (cards handle visual theme themselves) */
 .form-container.dark { color: #fff; }
 .form-container.light { color: #000; }
 
@@ -32,7 +34,7 @@
 .preview-section {
   display: flex;
   flex-direction: column;
-  flex: 1;               /* allow both columns to take equal height on wide screens */
+  flex: 1;               /* equal height columns on large screens */
   min-height: 0;         /* IMPORTANT: allows child overflow to scroll instead of expanding */
   background: var(--dark-card-bg);
   border-radius: var(--card-radius);
@@ -57,6 +59,7 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 8px;
+  padding-bottom: calc(var(--generate-height) + 12px); /* ensure last fields aren't hidden under sticky button */
 }
 
 /* Header row */
@@ -146,18 +149,21 @@ input:focus, select:focus, textarea:focus {
 
 /* Keep the generate button visible: sticky at bottom of the card */
 .form-actions {
+  height: var(--generate-height);
   margin-top: 12px;
   position: sticky;
   bottom: 0;
   padding-top: 8px;
   background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.02));
   z-index: 2;
+  display: flex;
+  align-items: center;
 }
 
 /* Primary generate button */
 .generate-btn {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border-radius: 10px;
   font-weight: 700;
   font-size: 15px;
@@ -175,34 +181,48 @@ input:focus, select:focus, textarea:focus {
   padding-top: 12px;
 }
 
-/* SMALL SCREEN BEHAVIOR: stack to a single column and hide the preview to prevent empty half-page */
+/* SMALL SCREEN BEHAVIOR: stack to a single column and make the form fill the screen.
+   Also remove left/right gaps so the card is edge-to-edge on small devices. */
+@media (max-width: 480px) {
+  .form-container {
+    grid-template-columns: 1fr;
+    height: 100%;
+    padding: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px) 12px;
+    width: 100vw; /* ensure no horizontal whitespace */
+    margin: 0;
+    gap: 12px;
+  }
+
+  /* Remove preview on mobile to avoid empty half-page */
+  .preview-section { display: none !important; }
+
+  /* Make the form card flush with edges (small radius and full width) */
+  .form-section {
+    border-radius: 12px 12px 0 0;
+    padding: 14px;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Make inner content scroll and ensure bottom padding for sticky button */
+  .form-section .content {
+    padding-bottom: calc(var(--generate-height) + 16px);
+  }
+
+  /* Reduce shadows and margins on very small screens */
+  .form-section {
+    box-shadow: none;
+  }
+}
+
+/* Medium breakpoint: collapse to single column as well */
 @media (max-width: 1024px) {
   .form-container {
     grid-template-columns: 1fr;
     height: 100%;
   }
 
-  /* Show only form; hide preview entirely for mobile to avoid blank area */
-  .preview-section {
-    display: none !important;
-  }
-
-  /* Make the form fill and scroll properly */
-  .form-section {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-}
-
-/* Tighter paddings on very small screens */
-@media (max-width: 480px) {
-  :root { --card-radius: 12px; }
-
-  .form-section {
-    padding: clamp(12px, 4vw, 20px);
-    border-radius: 12px;
-  }
-
-  .form-header h2 { font-size: 18px; }
-  .inputs-grid { gap: 10px; }
+  .preview-section { display: none; }
 }
