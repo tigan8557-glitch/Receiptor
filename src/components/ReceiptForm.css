@@ -8,43 +8,40 @@
   --dark-card-bg: #0f1419;
   --light-card-bg: #ffffff;
   --accent: #1a1f2e;
-  --generate-height: 72px; /* reserved height for sticky generate button area */
+  --generate-height: 72px; /* reserved height for sticky/fixed generate button */
 }
 
-/* Container that holds form and preview.
-   It fills the available height from .App and keeps a max width. */
+/* Layout container: two columns on wide screens */
 .form-container {
   width: min(var(--card-max-width), 100%);
-  height: 100%; /* fill parent (.App) height */
+  height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* form | preview on wide screens */
+  grid-template-columns: 1fr 1fr;
   gap: clamp(12px, 2vw, 40px);
   padding: clamp(var(--card-padding-min), 3vw, var(--card-padding-max));
   box-sizing: border-box;
-  align-items: stretch; /* stretch children to same height */
+  align-items: stretch;
 }
 
-/* Theme root classes (cards handle visual theme themselves) */
 .form-container.dark { color: #fff; }
 .form-container.light { color: #000; }
 
-/* Each column is a card that stretches to the container height */
+/* Cards */
 .form-section,
 .preview-section {
   display: flex;
   flex-direction: column;
-  flex: 1;               /* equal height columns on large screens */
-  min-height: 0;         /* IMPORTANT: allows child overflow to scroll instead of expanding */
+  flex: 1;
+  min-height: 0; /* critical for internal scroll */
   background: var(--dark-card-bg);
   border-radius: var(--card-radius);
   padding: clamp(16px, 2.6vw, 36px);
   box-sizing: border-box;
   box-shadow: 0 10px 30px rgba(2,6,23,0.18);
-  overflow: hidden;      /* inner area handles scrolling */
+  overflow: hidden;
 }
 
-/* Light theme card overrides */
 .form-container.light .form-section,
 .form-container.light .preview-section {
   background: var(--light-card-bg);
@@ -52,17 +49,17 @@
   box-shadow: 0 6px 18px rgba(10,10,10,0.06);
 }
 
-/* Inner scrollable content area: this is the piece that scrolls when content is too tall */
+/* Inner scroll area - this scrolls when content is taller than card */
 .form-section .content,
 .preview-section .content {
-  flex: 1;               /* take remaining height inside card */
+  flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 8px;
-  padding-bottom: calc(var(--generate-height) + 12px); /* ensure last fields aren't hidden under sticky button */
+  padding-bottom: calc(var(--generate-height) + 12px); /* avoid fields hiding under fixed button */
 }
 
-/* Header row */
+/* Header & controls */
 .form-header {
   display: flex;
   align-items: center;
@@ -70,12 +67,8 @@
   gap: var(--gap);
   margin-bottom: 12px;
 }
-.form-header h2 {
-  margin: 0;
-  font-size: clamp(18px, 2.2vw, 28px);
-}
+.form-header h2 { margin: 0; font-size: clamp(18px, 2.2vw, 28px); }
 
-/* Theme toggle */
 .theme-toggle-btn {
   padding: 8px 14px;
   border-radius: 8px;
@@ -88,141 +81,118 @@
 .form-container.light .theme-toggle-btn { border-color: #e6e6e6; }
 
 /* Controls & inputs */
-.control-group,
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.button-group { display: flex; gap: 10px; }
+.control-group, .input-group { display:flex; flex-direction:column; gap:8px; }
+.button-group { display:flex; gap:10px; }
 
 .btn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
+  flex:1;
+  padding:10px;
+  border-radius:8px;
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.04);
   color: #e6eef6;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.15s;
-  font-size: 13px;
+  cursor:pointer;
+  font-weight:500;
+  transition: all .15s;
+  font-size:13px;
 }
-.form-container.light .btn {
-  background: #fff;
-  color: #000;
-  border-color: #e6e6e6;
-}
-.btn.active { background: #000; color: #fff; border-color: #000; }
+.form-container.light .btn { background:#fff; color:#000; border-color:#e6e6e6; }
+.btn.active { background:#000; color:#fff; border-color:#000; }
 
 /* Inputs */
 input, select, textarea {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.06);
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.02);
-  color: #e6eef6;
-  font-size: 14px;
-  font-family: inherit;
-  box-sizing: border-box;
+  color:#e6eef6;
+  font-size:14px;
+  box-sizing:border-box;
 }
-.form-container.light input,
-.form-container.light select,
-.form-container.light textarea {
-  background: #fff;
-  border-color: #e6e6e6;
-  color: #000;
+.form-container.light input, .form-container.light select, .form-container.light textarea {
+  background:#fff; border-color:#e6e6e6; color:#000;
 }
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
-}
+input:focus, select:focus, textarea:focus { outline:none; box-shadow:0 0 0 4px rgba(0,0,0,0.06); }
 
-/* Responsive grid for inputs */
+/* Grid inputs responsive */
 .inputs-grid {
-  display: grid;
+  display:grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--gap);
-  margin-bottom: 8px;
+  margin-bottom:8px;
 }
 
-/* Keep the generate button visible: sticky at bottom of the card */
+/* Make the Generate action area sticky/fixed on smaller screens */
 .form-actions {
   height: var(--generate-height);
   margin-top: 12px;
-  position: sticky;
-  bottom: 0;
-  padding-top: 8px;
-  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.02));
-  z-index: 2;
-  display: flex;
-  align-items: center;
+  display:flex;
+  align-items:center;
+  z-index: 30;
 }
 
-/* Primary generate button */
-.generate-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  border: none;
-  color: #fff;
-  background: linear-gradient(180deg, #111827, #0b1220);
-}
-.form-container.light .generate-btn { background: #000; color: #fff; }
-
-/* Preview tweaks */
-.preview-section {
-  align-items: center;
-  justify-content: center;
-  padding-top: 12px;
+/* Default: place button inside card (sticky) */
+@media (min-width: 481px) {
+  .form-actions { position: sticky; bottom: 0; padding-top: 8px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.02)); }
 }
 
-/* SMALL SCREEN BEHAVIOR: stack to a single column and make the form fill the screen.
-   Also remove left/right gaps so the card is edge-to-edge on small devices. */
+/* Mobile: pin the button to viewport bottom so it's always tappable */
 @media (max-width: 480px) {
+  .form-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: env(safe-area-inset-bottom, 12px);
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.03));
+    box-shadow: 0 -6px 18px rgba(0,0,0,0.15);
+  }
+
+  /* full-width, edge-to-edge content & container */
   .form-container {
     grid-template-columns: 1fr;
     height: 100%;
     padding: env(safe-area-inset-top) 12px calc(env(safe-area-inset-bottom) + 12px) 12px;
-    width: 100vw; /* ensure no horizontal whitespace */
+    width: 100vw;
     margin: 0;
     gap: 12px;
   }
 
-  /* Remove preview on mobile to avoid empty half-page */
+  /* Hide preview on mobile to avoid blank space and keep everything accessible */
   .preview-section { display: none !important; }
 
-  /* Make the form card flush with edges (small radius and full width) */
   .form-section {
-    border-radius: 12px 12px 0 0;
-    padding: 14px;
-    min-height: 0;
+    border-radius: 0;
+    padding: 12px;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    min-height: 0;
+    display:flex;
+    flex-direction:column;
   }
 
-  /* Make inner content scroll and ensure bottom padding for sticky button */
-  .form-section .content {
-    padding-bottom: calc(var(--generate-height) + 16px);
-  }
-
-  /* Reduce shadows and margins on very small screens */
-  .form-section {
-    box-shadow: none;
-  }
+  .form-section .content { padding-bottom: calc(var(--generate-height) + 24px); }
+  .form-section { box-shadow:none; }
 }
 
-/* Medium breakpoint: collapse to single column as well */
-@media (max-width: 1024px) {
-  .form-container {
-    grid-template-columns: 1fr;
-    height: 100%;
-  }
+/* Primary button styling */
+.generate-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  border:none;
+  color:#fff;
+  background: linear-gradient(180deg, #111827, #0b1220);
+}
+.form-container.light .generate-btn { background:#000; color:#fff; }
 
+/* Preview area styling */
+.preview-section { align-items:center; justify-content:center; padding-top:12px; }
+
+/* Medium screens collapse to single column too */
+@media (max-width: 1024px) {
+  .form-container { grid-template-columns: 1fr; height: 100%; }
   .preview-section { display: none; }
 }
