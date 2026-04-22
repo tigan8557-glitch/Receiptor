@@ -10,13 +10,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f5f5f5; /* light default - switches visually on mobile via media query below */
+  background: #f5f5f5;
   transition: background 0.25s;
 }
 
 /* App wrapper fills the viewport and centers horizontally */
 .App {
-  height: 100vh; /* full viewport height */
+  height: 100vh;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -28,12 +28,10 @@ body {
 /* On small viewports remove outer padding so the card can go edge-to-edge */
 @media (max-width: 480px) {
   body {
-    /* set a dark-ish background that matches the card when in dark mode.
-       If you use a light-only app, change this to a light color. */
-    background: #0f1419;
+    background: #0f1419; /* dark fallback - the card itself handles theme */
   }
 
   .App {
-    padding: 0; /* allow full width usage */
+    padding: 0;
   }
 }
